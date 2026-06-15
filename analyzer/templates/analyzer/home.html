@@ -46,14 +46,15 @@
 
     <h1>AI Resume Analyzer</h1>
 
-    <form>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
 
         <label>Upload Resume (PDF)</label>
-        <input type="file">
+        <input type="file" name="resume" required>
 
         <label>Job Description</label>
 
-        <textarea rows="8"></textarea>
+        <textarea rows="8" name="job_description"></textarea>
 
         <button type="submit">
             Analyze Resume
@@ -61,7 +62,58 @@
 
     </form>
 
+    {% if text %}
+
+    <hr>
+
+    <h2>Candidate Information</h2>
+
+    <p><strong>Name:</strong> {{ name }}</p>
+    <p><strong>Email:</strong> {{ email }}</p>
+    <p><strong>Phone:</strong> {{ phone }}</p>
+
+    <hr>
+
+    <h2>Skills Found</h2>
+
+    <ul>
+        {% for skill in skills %}
+            <li>{{ skill }}</li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+
+    <h2>ATS Score</h2>
+
+    <h1>{{ ats_score }}%</h1>
+
+    <h3>Matched Skills</h3>
+
+    <ul>
+        {% for skill in matched_skills %}
+            <li>{{ skill }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Missing Skills</h3>
+
+    <ul>
+        {% for skill in missing_skills %}
+            <li>{{ skill }}</li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+
+    <h2>Extracted Resume Text</h2>
+
+    <pre>{{ text }}</pre>
+
+    {% endif %}
+
 </div>
+
 
 </body>
 </html>
